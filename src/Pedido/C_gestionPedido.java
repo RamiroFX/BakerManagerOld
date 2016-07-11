@@ -6,8 +6,6 @@ package Pedido;
 
 import Charts.Diagramas;
 import Cliente.Seleccionar_cliente;
-import DB_manager.DB_Egreso;
-import DB_manager.DB_Pedido;
 import DB_manager.ResultSetTableModel;
 import Entities.M_cliente;
 import Entities.M_funcionario;
@@ -47,12 +45,12 @@ public class C_gestionPedido implements Gestion {
     public final void inicializarVista() {
         this.vista.jbDetalle.setEnabled(false);
         this.vista.jbBuscarDetalle.setEnabled(false);
-        Vector condCompra = DB_Egreso.obtenerTipoOperacion();
+        Vector condCompra = modelo.obtenerTipoOperacion();
         this.vista.jcbCondVenta.addItem("Todos");
         for (int i = 0; i < condCompra.size(); i++) {
             this.vista.jcbCondVenta.addItem(condCompra.get(i));
         }
-        Vector estadoPedido = DB_Pedido.obtenerEstado();
+        Vector estadoPedido = modelo.obtenerEstado();
         this.vista.jcbEstadoPedido.addItem("Todos");
         for (int i = 0; i < estadoPedido.size(); i++) {
             this.vista.jcbEstadoPedido.addItem(estadoPedido.get(i));
@@ -214,7 +212,7 @@ public class C_gestionPedido implements Gestion {
         int fila = this.vista.jtPedido.rowAtPoint(e.getPoint());
         int columna = this.vista.jtPedido.columnAtPoint(e.getPoint());
         Integer idPedido = Integer.valueOf(String.valueOf(this.vista.jtPedido.getValueAt(fila, 0)));
-        this.modelo.setPedido(DB_Pedido.obtenerPedido(idPedido));
+        this.modelo.setPedido(modelo.obtenerPedido(idPedido));
         controlarTablaPedido();
         if (this.modelo.getPedido().getIdEstado() == 1) {
             this.vista.jbPagoPedido.setEnabled(true);
@@ -224,7 +222,7 @@ public class C_gestionPedido implements Gestion {
             this.vista.jbCancelarPedido.setEnabled(false);
         }
         if ((fila > -1) && (columna > -1)) {
-            this.vista.jtPedidoDetalle.setModel(DB_Pedido.obtenerPedidoDetalle(idPedido));
+            this.vista.jtPedidoDetalle.setModel(modelo.obtenerPedidoDetalle(idPedido));
             Utilities.c_packColumn.packColumns(this.vista.jtPedidoDetalle, 1);
         }
         if (e.getClickCount() == 2) {
@@ -307,7 +305,7 @@ public class C_gestionPedido implements Gestion {
             int row = this.vista.jtPedido.getSelectedRow();
             int columna = this.vista.jtPedido.getSelectedRow();
             int idPedido = Integer.valueOf(String.valueOf(this.vista.jtPedido.getValueAt(row, 0)));
-            this.modelo.setPedido(DB_Pedido.obtenerPedido(idPedido));
+            this.modelo.setPedido(modelo.obtenerPedido(idPedido));
             controlarTablaPedido();
             if (this.modelo.getPedido().getIdEstado() == 1) {
                 this.vista.jbPagoPedido.setEnabled(true);
@@ -317,7 +315,7 @@ public class C_gestionPedido implements Gestion {
                 this.vista.jbCancelarPedido.setEnabled(false);
             }
             if ((row > -1) && (columna > -1)) {
-                this.vista.jtPedidoDetalle.setModel(DB_Pedido.obtenerPedidoDetalle(idPedido));
+                this.vista.jtPedidoDetalle.setModel(modelo.obtenerPedidoDetalle(idPedido));
                 Utilities.c_packColumn.packColumns(this.vista.jtPedidoDetalle, 1);
             }
         }

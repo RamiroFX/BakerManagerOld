@@ -4,6 +4,7 @@
  */
 package Pedido;
 
+import DB_manager.DB_Egreso;
 import DB_manager.DB_Pedido;
 import DB_manager.ResultSetTableModel;
 import Entities.M_cliente;
@@ -12,7 +13,9 @@ import Entities.M_pedido;
 import Entities.M_pedidoDetalle;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Vector;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 /**
  *
@@ -111,5 +114,21 @@ public class M_gestionPedido {
     public void pagarPedido() {
         setDetalles(DB_Pedido.obtenerPedidoDetalles(getPedido().getIdPedido()));
         DB_Pedido.pagarPedido(getPedido(), getDetalles());
+    }
+
+    Vector obtenerTipoOperacion() {
+        return DB_Egreso.obtenerTipoOperacion();
+    }
+
+    Vector obtenerEstado() {
+        return DB_Pedido.obtenerEstado();
+    }
+
+    M_pedido obtenerPedido(Integer idPedido) {
+        return DB_Pedido.obtenerPedido(idPedido);
+    }
+
+    ResultSetTableModel obtenerPedidoDetalle(Integer idPedido) {
+        return DB_Pedido.obtenerPedidoDetalle(idPedido);
     }
 }
