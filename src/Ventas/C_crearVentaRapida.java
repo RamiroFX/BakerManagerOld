@@ -23,17 +23,24 @@ public class C_crearVentaRapida implements Gestion {
 
     public M_crearVentaRapida modelo;
     public V_crearVentaRapida vista;
+    private C_gestionVentas gestionVentas;
 
-    C_crearVentaRapida(M_crearVentaRapida modelo, V_crearVentaRapida vista, C_gestionVentas gestionVentas) {
+    public C_crearVentaRapida(M_crearVentaRapida modelo, V_crearVentaRapida vista, C_gestionVentas gestionVentas) {
         this.modelo = modelo;
         this.vista = vista;
+        this.gestionVentas = gestionVentas;
         inicializarVista();
         agregarListeners();
     }
 
     @Override
     public final void inicializarVista() {
-        this.vista.jtfFuncionario.setText(this.modelo.getFuncionario().getAlias());
+        this.modelo.getCabecera().setFuncionario(this.gestionVentas.c_inicio.getFuncionario());
+        this.vista.jtfFuncionario.setText(this.modelo.getCabecera().getFuncionario().getAlias());
+        this.vista.jtfClieDireccion.setText(this.modelo.getCabecera().getCliente().getDireccion());
+        this.vista.jtfCliente.setText(this.modelo.getCabecera().getCliente().getEntidad() + "(" + this.modelo.getCabecera().getCliente().getNombre() + ")");
+        this.vista.jtfClieTelefono.setText(this.modelo.getTelefono().getNumero());
+        this.vista.jtfClieRuc.setText(this.modelo.getCabecera().getCliente().getRuc() + "-" + this.modelo.getCabecera().getCliente().getRucId());
         this.vista.jrbContado.setSelected(true);
         this.vista.jtFacturaDetalle.setModel(this.modelo.getDtm());
         this.vista.jbModificarDetalle.setEnabled(false);

@@ -4,11 +4,13 @@
  */
 package Ventas;
 
+import DB_manager.DB_Cliente;
 import DB_manager.DB_Funcionario;
 import DB_manager.DB_Ingreso;
 import Entities.M_facturaCabecera;
 import Entities.M_facturaDetalle;
 import Entities.M_funcionario;
+import Entities.M_telefono;
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 
@@ -18,16 +20,17 @@ import javax.swing.table.DefaultTableModel;
  */
 public class M_crearVentaRapida {
 
-    private M_funcionario funcionario;
     private M_facturaCabecera cabecera;
     private M_facturaDetalle detalle;
+    private M_telefono telefono;
     private ArrayList<M_facturaDetalle> detalles;
     private DefaultTableModel dtm;
 
     public M_crearVentaRapida() {
-        this.funcionario = DB_Funcionario.obtenerDatosFuncionarioID(1);
         this.cabecera = new M_facturaCabecera();
-        this.cabecera.setFuncionario(funcionario);
+        this.cabecera.setCliente(DB_Cliente.obtenerDatosClienteID(1));//mostrador
+        this.cabecera.setIdCondVenta(1);//contado
+        this.telefono = DB_Cliente.obtenerTelefonoCliente(this.cabecera.getCliente().getIdCliente()).get(1);
         this.detalle = new M_facturaDetalle();
         this.detalles = new ArrayList<>();
         dtm = new DefaultTableModel();
@@ -39,14 +42,6 @@ public class M_crearVentaRapida {
         dtm.addColumn("Exenta");
         dtm.addColumn("IVA 5%");
         dtm.addColumn("IVA 10%");
-    }
-
-    public M_funcionario getFuncionario() {
-        return funcionario;
-    }
-
-    public void setFuncionario(M_funcionario funcionario) {
-        this.funcionario = funcionario;
     }
 
     public M_facturaCabecera getCabecera() {
@@ -95,5 +90,19 @@ public class M_crearVentaRapida {
 
     public void guardarVenta() {
         DB_Ingreso.insertarIngreso(getCabecera(), getDetalles());
+    }
+
+    /**
+     * @return the telefono
+     */
+    public M_telefono getTelefono() {
+        return telefono;
+    }
+
+    /**
+     * @param telefono the telefono to set
+     */
+    public void setTelefono(M_telefono telefono) {
+        this.telefono = telefono;
     }
 }

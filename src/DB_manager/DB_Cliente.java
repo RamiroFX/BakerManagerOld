@@ -891,4 +891,39 @@ public class DB_Cliente {
      }
      return rstm;
      }*/
+
+    public static ArrayList<M_telefono> obtenerTelefonoCliente(int idCliente) {
+        ArrayList telefonos = null;
+        String query = "SELECT TELE_ID_TELEFONO, TELE_NUMERO, TELE_CATEGORIA, TELE_OBSERVACION  FROM TELEFONO, CLIENTE, CLIENTE_TELEFONO  WHERE CLIE_ID_CLIENTE = CLTE_ID_CLIENTE  AND CLTE_ID_TELEFONO = TELE_ID_TELEFONO"
+                + " AND CLIE_ID_CLIENTE = " + idCliente + ";";
+        try {
+            st = DB_manager.getConection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+            rs = st.executeQuery(query);
+            telefonos = new ArrayList();
+            while (rs.next()) {
+                M_telefono telefono = new M_telefono();
+                telefono.setId_telefono(rs.getInt("CLIE_ID_CLIENTE"));
+                telefono.setCategoria(rs.getString("TELE_CATEGORIA"));
+                telefono.setNumero(rs.getString("TELE_NUMERO"));
+                telefono.setObservacion(rs.getString("TELE_OBSERVACION"));
+                telefonos.add(telefono);
+            }
+        } catch (SQLException ex) {
+            Logger lgr = Logger.getLogger(DB_Cliente.class.getName());
+            lgr.log(Level.SEVERE, ex.getMessage(), ex);
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (st != null) {
+                    st.close();
+                }
+            } catch (SQLException ex) {
+                Logger lgr = Logger.getLogger(DB_Cliente.class.getName());
+                lgr.log(Level.WARNING, ex.getMessage(), ex);
+            }
+        }
+        return telefonos;
+    }
 }
